@@ -1,0 +1,68 @@
+// Displays an alert saying "Hello, world!"
+function showAlert() {
+    alert("Hello, world!");
+}
+
+// Increases the font size of the textarea and shows an alert
+function makeTextBigger() {
+    document.getElementById("textArea").style.fontSize = "24pt";
+    showAlert();
+}
+
+// Applies text styles based on selected radio button
+function applyStyles() {
+    alert("Style changed!");
+
+    let textArea = document.getElementById("textArea");
+
+    if (document.getElementById("FancyShmancy").checked) {
+        textArea.style.fontWeight = "bold";
+        textArea.style.color = "blue";
+        textArea.style.textDecoration = "underline";
+        localStorage.setItem("style", "fancy");
+    } else {
+        textArea.style.fontWeight = "normal";
+        textArea.style.color = "black";
+        textArea.style.textDecoration = "none";
+        localStorage.setItem("style", "boring");
+    }
+}
+
+// Loads previously saved text style from localStorage
+function loadStyles() {
+    let style = localStorage.getItem("style");
+
+    if (style === "fancy") {
+        document.getElementById("FancyShmancy").checked = true;
+    } else {
+        document.getElementById("BoringBetty").checked = true;
+    }
+
+    applyStyles();
+}
+
+// Converts text to uppercase and adds "-Moo" at the end of each sentence
+function mooifyText() {
+    let textArea = document.getElementById("textArea");
+    let text = textArea.value.toUpperCase();
+    let sentences = text.split(".");
+
+    for (let i = 0; i < sentences.length - 1; i++) {
+        let words = sentences[i].trim().split(" ");
+        if (words.length > 0) {
+            words[words.length - 1] += "-Moo";
+        }
+        sentences[i] = words.join(" ");
+    }
+
+    textArea.value = sentences.join(". ");
+}
+
+// Link functions to button/radio events
+document.getElementById("biggerButton").addEventListener("click", makeTextBigger);
+document.getElementById("FancyShmancy").addEventListener("change", applyStyles);
+document.getElementById("BoringBetty").addEventListener("change", applyStyles);
+document.getElementById("mooButton").addEventListener("click", mooifyText);
+
+// Load saved style when the page loads
+window.onload = loadStyles;
